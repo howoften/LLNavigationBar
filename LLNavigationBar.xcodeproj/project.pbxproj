@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2D0D94492946D0EE00FB8511 /* LLNavigationBackButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D0D94482946D0EE00FB8511 /* LLNavigationBackButton.m */; };
 		2D2982192930B31800774574 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D2982182930B31700774574 /* WebKit.framework */; };
 		2DC241C228DBF84C00061057 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DC241C128DBF84C00061057 /* AppDelegate.m */; };
 		2DC241C828DBF84C00061057 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DC241C728DBF84C00061057 /* ViewController.m */; };
@@ -20,6 +21,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2D0D94472946D0EE00FB8511 /* LLNavigationBackButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LLNavigationBackButton.h; sourceTree = "<group>"; };
+		2D0D94482946D0EE00FB8511 /* LLNavigationBackButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LLNavigationBackButton.m; sourceTree = "<group>"; };
 		2D2982182930B31700774574 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		2DC241BD28DBF84C00061057 /* LLNavigationBar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LLNavigationBar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DC241C028DBF84C00061057 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -85,6 +88,8 @@
 				2DC241C728DBF84C00061057 /* ViewController.m */,
 				2DC241D928DBFBCF00061057 /* LLNavigationBar.h */,
 				2DC241DA28DBFBCF00061057 /* LLNavigationBar.m */,
+				2D0D94472946D0EE00FB8511 /* LLNavigationBackButton.h */,
+				2D0D94482946D0EE00FB8511 /* LLNavigationBackButton.m */,
 				2DC241C928DBF84C00061057 /* Main.storyboard */,
 				2DC241CC28DBF84E00061057 /* Assets.xcassets */,
 				2DC241CE28DBF84E00061057 /* LaunchScreen.storyboard */,
@@ -168,6 +173,7 @@
 			files = (
 				2DC241C828DBF84C00061057 /* ViewController.m in Sources */,
 				2DC241DB28DBFBCF00061057 /* LLNavigationBar.m in Sources */,
+				2D0D94492946D0EE00FB8511 /* LLNavigationBackButton.m in Sources */,
 				2DC241C228DBF84C00061057 /* AppDelegate.m in Sources */,
 				2DC241D328DBF84E00061057 /* main.m in Sources */,
 			);

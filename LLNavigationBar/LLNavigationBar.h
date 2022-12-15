@@ -6,7 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "LLNavigationBackButton.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LLNavigationBar : UIView
@@ -30,9 +30,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) BOOL lightStyle;
 @property (nonatomic) BOOL translucent;
+@property (nonatomic, strong)UIColor *shadowColor;
+@property (nonatomic, readonly)CGFloat statusBarHeight;
+@property (nonatomic) BOOL hiddenBackButton;
+@property (nonatomic, strong) UIView *backButton;
 
 - (void)showAnimated:(BOOL)animated;
 - (void)hiddenAnimated:(BOOL)animated;
+- (void)showPercent:(CGFloat)percent;
+- (void)hiddenPercent:(CGFloat)percent;
 
 @end
 

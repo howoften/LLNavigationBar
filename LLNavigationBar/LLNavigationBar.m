@@ -31,6 +31,8 @@
 @property (nonatomic, strong)NSLayoutConstraint *barBottomAnchor;
 
 @property (nonatomic) BOOL titleColorModified;
+@property (nonatomic, strong)LLNavigationBackButton *privateBackButton;
+@property (nonatomic, strong) NSNumber *setHiddenBackButton;
 @end
 const NSInteger llNavigationBarTag = 3145;
 @implementation LLNavigationBar
@@ -44,10 +46,7 @@ const NSInteger llNavigationBarTag = 3145;
     self = [super initWithFrame:frame];
     if (self) {
         [self setup];
-        self.tag = llNavigationBarTag;
-        _translucent= YES;
-        _lightStyle = YES;
-//        self.backgroundColor = [UIColor colorWithWhite:250/255.0 alpha:1];
+        [self configBarStyle];
         __weak LLNavigationBar *bar_weak_ref = self;
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillChangeStatusBarFrameNotification object:nil queue:NSOperationQueue.mainQueue usingBlock:^(NSNotification * _Nonnull note) {
             bar_weak_ref.barBottomAnchor.constant = [bar_weak_ref barStandarMarginBottom];
@@ -55,6 +54,16 @@ const NSInteger llNavigationBarTag = 3145;
         }];
     }
     return self;
+}
+- (void)configBarStyle {
+    self.tag = llNavigationBarTag;
+    _translucent= YES;
+    _lightStyle = YES;
+    _shadowColor = [UIColor colorWithRed:203/255.f green:203/255.f blue:203/255.f alpha:1];
+    self.layer.shadowColor = _shadowColor.CGColor;
+    self.layer.shadowOffset = CGSizeMake(0, 3);
+    self.layer.shadowRadius = 3;
+    self.layer.shadowOpacity = 0.7;
 }
 - (void)setup {
     self.backgroundImageView = [UIImageView new];
@@ -112,25 +121,48 @@ const NSInteger llNavigationBarTag = 3145;
     
     self.leftStack = [UIStackView new];
     self.leftStack.axis = UILayoutConstraintAxisHorizontal;
-    self.leftStack.distribution = UIStackViewDistributionFillProportionally;
+    self.leftStack.distribution = UIStackViewDistributionEqualSpacing;
     self.leftStack.alignment = UIStackViewAlignmentCenter;
     self.leftStack.translatesAutoresizingMaskIntoConstraints = false;
     [self.contentView addSubview:self.leftStack];
     [self.leftStack.leftAnchor constraintEqualToAnchor:self.leftStack.superview.leftAnchor].active = YES;
     [self.leftStack.centerYAnchor constraintEqualToAnchor:self.leftStack.superview.centerYAnchor].active = YES;
     [self.leftStack.rightAnchor constraintLessThanOrEqualToAnchor:self.titleStack.leftAnchor constant:-3].active = YES;
+    [self.leftStack.heightAnchor constraintEqualToConstant:44].active = YES;
+    
+    self.privateBackButton = [[LLNavigationBackButton alloc] init];
+    [self.leftStack addArrangedSubview:self.privateBackButton];
+    [self.privateBackButton addTarget:self action:@selector(onBack) forControlEvents:UIControlEventTouchUpInside];
+    self.backButton = self.privateBackButton;
     
     self.rightStack = [UIStackView new];
     self.rightStack.axis = UILayoutConstraintAxisHorizontal;
-    self.rightStack.distribution = UIStackViewDistributionFillProportionally;
+    self.rightStack.distribution = UIStackViewDistributionEqualSpacing;
     self.rightStack.alignment = UIStackViewAlignmentCenter;
     self.rightStack.translatesAutoresizingMaskIntoConstraints = false;
     [self.contentView addSubview:self.rightStack];
     [self.rightStack.rightAnchor constraintEqualToAnchor:self.rightStack.superview.rightAnchor].active = YES;
     [self.rightStack.centerYAnchor constraintEqualToAnchor:self.rightStack.superview.centerYAnchor].active = YES;
     [self.rightStack.leftAnchor constraintGreaterThanOrEqualToAnchor:self.titleStack.rightAnchor constant:3].active = YES;
+    [self.rightStack.heightAnchor constraintEqualToConstant:44].active = YES;
     
     
+}
+- (void)onBack {
+    UIViewController *current = [self viewController];
+    if (current.navigationController == nil) {
+        if (current.presentingViewController != nil) {
+            [current dismissViewControllerAnimated:YES completion:nil];
+            return;
+        }
+        if (current.navigationController.presentingViewController != nil) {
+            [current.navigationController dismissViewControllerAnimated:YES completion:nil];
+            return;
+        }
+        return;
+    }
+    [current.navigationController popViewControllerAnimated:YES];
+
 }
 - (void)applyConstraintInView:(UIView *)view {
     UIView *superView = view ?: self.superview;
@@ -149,14 +181,43 @@ const NSInteger llNavigationBarTag = 3145;
     [super layoutSubviews];
     [self.superview bringSubviewToFront:self];
     self.barBottomAnchor.constant = -[self barStandarMarginBottom];
+    [self hiddenBackButtonIfNeeded];
+    [self setNeedsUpdateConstraints];
+}
+- (void)willMoveToSuperview:(UIView *)newSuperview {
+    [super willMoveToSuperview:newSuperview];
+    [self.superview bringSubviewToFront:self];
+    self.barBottomAnchor.constant = -[self barStandarMarginBottom];
+    [self hiddenBackButtonIfNeeded];
     [self setNeedsUpdateConstraints];
 }
 - (void)willMoveToWindow:(UIWindow *)newWindow {
     [super willMoveToWindow:newWindow];
+    [self.superview bringSubviewToFront:self];
     self.barBottomAnchor.constant = -[self barStandarMarginBottom];
+    [self hiddenBackButtonIfNeeded];
     [self setNeedsUpdateConstraints];
 }
 
+- (void)hiddenBackButtonIfNeeded {
+    if (self.backButton != self.privateBackButton) return;
+    
+    if (self.setHiddenBackButton) {
+        self.backButton.hidden = [self.setHiddenBackButton boolValue];
+        return;
+    }
+    UIViewController *current = [self viewController];
+    if (current.presentingViewController != nil || current.navigationController.presentingViewController != nil) {
+        self.backButton.hidden = NO;
+        return;
+    }
+    if ([current.navigationController.viewControllers indexOfObject:current] > 0) {
+        self.backButton.hidden = NO;
+        return;
+    }
+    self.backButton.hidden = YES;
+    
+}
 - (void)setContentInset:(UIEdgeInsets)contentInset {
     if (UIEdgeInsetsEqualToEdgeInsets(contentInset, _contentInset)) return;
     _contentInset = contentInset;
@@ -168,23 +229,24 @@ const NSInteger llNavigationBarTag = 3145;
     [self setNeedsLayout];
 }
 - (void)setLeftItems:(NSArray<UIView *> *)leftItems {
-    _leftItems = leftItems;
-    [self.leftStack.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [_leftItems enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        obj.hidden = YES;
         [obj removeFromSuperview];
     }];
     
+    _leftItems = leftItems;
     [leftItems enumerateObjectsUsingBlock:^(UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         [self.leftStack addArrangedSubview:obj];
     }];
     
 }
 - (void)setRightItems:(NSArray<UIView *> *)rightItems {
-    _rightItems = rightItems;
-    
-    [self.rightStack.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [_rightItems enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        obj.hidden = YES;
         [obj removeFromSuperview];
     }];
     
+    _rightItems = rightItems;
     [rightItems enumerateObjectsUsingBlock:^(UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         [self.rightStack addArrangedSubview:obj];
     }];
@@ -250,6 +312,10 @@ const NSInteger llNavigationBarTag = 3145;
     }
     
 }
+- (void)setShadowColor:(UIColor *)shadowColor {
+    _shadowColor = shadowColor;
+    self.layer.shadowColor = shadowColor.CGColor;
+}
 
 - (void)showAnimated:(BOOL)animated {
     if (!animated) {
@@ -273,6 +339,21 @@ const NSInteger llNavigationBarTag = 3145;
         
     }];
 }
+- (void)hiddenPercent:(CGFloat)percent {
+    if (percent < 0) {
+        self.transform = CGAffineTransformMakeTranslation(0, 0);
+        return;
+    }
+    self.transform = CGAffineTransformMakeTranslation(0, -CGRectGetHeight(self.frame)*percent);
+}
+- (void)showPercent:(CGFloat)percent {
+    if (percent > 1) {
+        self.transform = CGAffineTransformIdentity;
+        return;
+    }
+    self.transform = CGAffineTransformMakeTranslation(0, -CGRectGetHeight(self.frame) * (1-percent));
+}
+
 - (void)setTranslucent:(BOOL)translucent {
     _translucent = translucent;
     
@@ -284,6 +365,20 @@ const NSInteger llNavigationBarTag = 3145;
                CGColorEqualToColor(self.backgroundColor.CGColor, [UIColor colorWithWhite:100 / 255.0 alpha:1].CGColor)) && translucent) {
         self.backgroundColor = nil;
     }
+}
+- (void)setBackButton:(UIView *)backButton {
+    if ([self.leftStack.arrangedSubviews containsObject:_backButton]) {
+        [self.leftStack removeArrangedSubview:_backButton];
+        
+    }
+    _backButton = backButton;
+    [self.leftStack insertArrangedSubview:backButton atIndex:0];
+    
+}
+- (void)setHiddenBackButton:(BOOL)hiddenBackButton {
+    _hiddenBackButton = hiddenBackButton;
+    self.setHiddenBackButton = @(hiddenBackButton);
+    [self hiddenBackButtonIfNeeded];
 }
 
 - (CGFloat)statusBarHeight {
