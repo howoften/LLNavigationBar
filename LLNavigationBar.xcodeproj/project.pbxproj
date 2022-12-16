@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2D0D94492946D0EE00FB8511 /* LLNavigationBackButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D0D94482946D0EE00FB8511 /* LLNavigationBackButton.m */; };
 		2D2982192930B31800774574 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D2982182930B31700774574 /* WebKit.framework */; };
+		2D513F10294C406800E345EE /* LLModalTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D513F0E294C406800E345EE /* LLModalTransition.m */; };
 		2DC241C228DBF84C00061057 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DC241C128DBF84C00061057 /* AppDelegate.m */; };
 		2DC241C828DBF84C00061057 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DC241C728DBF84C00061057 /* ViewController.m */; };
 		2DC241CB28DBF84C00061057 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2DC241C928DBF84C00061057 /* Main.storyboard */; };
@@ -24,6 +25,8 @@
 		2D0D94472946D0EE00FB8511 /* LLNavigationBackButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LLNavigationBackButton.h; sourceTree = "<group>"; };
 		2D0D94482946D0EE00FB8511 /* LLNavigationBackButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LLNavigationBackButton.m; sourceTree = "<group>"; };
 		2D2982182930B31700774574 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		2D513F0E294C406800E345EE /* LLModalTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLModalTransition.m; sourceTree = "<group>"; };
+		2D513F0F294C406800E345EE /* LLModalTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLModalTransition.h; sourceTree = "<group>"; };
 		2DC241BD28DBF84C00061057 /* LLNavigationBar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LLNavigationBar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DC241C028DBF84C00061057 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		2DC241C128DBF84C00061057 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -60,6 +63,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		2D513F0D294B19E800E345EE /* LLNavigationBar */ = {
+			isa = PBXGroup;
+			children = (
+				2DC241D928DBFBCF00061057 /* LLNavigationBar.h */,
+				2DC241DA28DBFBCF00061057 /* LLNavigationBar.m */,
+				2D0D94472946D0EE00FB8511 /* LLNavigationBackButton.h */,
+				2D0D94482946D0EE00FB8511 /* LLNavigationBackButton.m */,
+				2D513F0F294C406800E345EE /* LLModalTransition.h */,
+				2D513F0E294C406800E345EE /* LLModalTransition.m */,
+			);
+			path = LLNavigationBar;
+			sourceTree = "<group>";
+		};
 		2DC241B428DBF84C00061057 = {
 			isa = PBXGroup;
 			children = (
@@ -82,14 +98,11 @@
 		2DC241BF28DBF84C00061057 /* LLNavigationBar */ = {
 			isa = PBXGroup;
 			children = (
+				2D513F0D294B19E800E345EE /* LLNavigationBar */,
 				2DC241C028DBF84C00061057 /* AppDelegate.h */,
 				2DC241C128DBF84C00061057 /* AppDelegate.m */,
 				2DC241C628DBF84C00061057 /* ViewController.h */,
 				2DC241C728DBF84C00061057 /* ViewController.m */,
-				2DC241D928DBFBCF00061057 /* LLNavigationBar.h */,
-				2DC241DA28DBFBCF00061057 /* LLNavigationBar.m */,
-				2D0D94472946D0EE00FB8511 /* LLNavigationBackButton.h */,
-				2D0D94482946D0EE00FB8511 /* LLNavigationBackButton.m */,
 				2DC241C928DBF84C00061057 /* Main.storyboard */,
 				2DC241CC28DBF84E00061057 /* Assets.xcassets */,
 				2DC241CE28DBF84E00061057 /* LaunchScreen.storyboard */,
@@ -171,6 +184,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D513F10294C406800E345EE /* LLModalTransition.m in Sources */,
 				2DC241C828DBF84C00061057 /* ViewController.m in Sources */,
 				2DC241DB28DBFBCF00061057 /* LLNavigationBar.m in Sources */,
 				2D0D94492946D0EE00FB8511 /* LLNavigationBackButton.m in Sources */,

@@ -9,9 +9,10 @@
 #import "LLNavigationBar.h"
 #import <WebKit/WebKit.h>
 #import "LLNavigationBackButton.h"
+#import "LLModalTransition.h"
 @interface ViewController ()<UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet WKWebView *webview;
-
+@property (nonatomic, strong)LLModalTransition *transit;
 @end
 
 @implementation ViewController
@@ -42,7 +43,12 @@
 
 }
 - (IBAction)nextAction:(id)sender {
-    [self.navigationController pushViewController:ViewController.new animated:YES];
+    UINavigationController *next = [[UINavigationController alloc] initWithRootViewController:[[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"ViewController"]];
+    next.navigationBar.hidden = YES;
+    _transit = [LLModalTransition transitionFromModalStyle:ViewControllerModalStyleLikeNavigation presentedViewController:next presentingViewController:self.navigationController];
+    next.transitioningDelegate = _transit;
+    [self.navigationController presentViewController:next animated:YES completion:nil];
+    
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {

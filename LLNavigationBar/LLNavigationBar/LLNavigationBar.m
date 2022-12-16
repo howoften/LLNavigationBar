@@ -151,18 +151,29 @@ const NSInteger llNavigationBarTag = 3145;
 - (void)onBack {
     UIViewController *current = [self viewController];
     if (current.navigationController == nil) {
-        if (current.presentingViewController != nil) {
-            [current dismissViewControllerAnimated:YES completion:nil];
-            return;
-        }
         if (current.navigationController.presentingViewController != nil) {
             [current.navigationController dismissViewControllerAnimated:YES completion:nil];
             return;
         }
+        if (current.presentingViewController != nil) {
+            [current dismissViewControllerAnimated:YES completion:nil];
+            return;
+        }
         return;
     }
-    [current.navigationController popViewControllerAnimated:YES];
-
+    if ([current.navigationController.viewControllers indexOfObject:current] > 0) {
+        [current.navigationController popViewControllerAnimated:YES];
+        return;
+    }
+    if (current.navigationController.presentingViewController != nil) {
+        [current.navigationController dismissViewControllerAnimated:YES completion:nil];
+        return;
+    }
+    if (current.presentingViewController != nil) {
+        [current dismissViewControllerAnimated:YES completion:nil];
+        return;
+    }
+    
 }
 - (void)applyConstraintInView:(UIView *)view {
     UIView *superView = view ?: self.superview;
