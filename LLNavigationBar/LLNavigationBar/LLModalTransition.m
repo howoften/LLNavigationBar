@@ -147,14 +147,14 @@ NSString *const ViewControllerModalStyleLikeNavigation = @"ViewControllerModalSt
         }else {
             [self forceCallViewControllerLifeSelector:toViewController active:YES willDo:YES animated:[transitionContext isAnimated]];
 
-            [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:1 initialSpringVelocity:0.05 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            [UIView animateWithDuration:[self transitionDuration:transitionContext]*0.5 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
                 fromView.transform = CGAffineTransformMakeTranslation(CGRectGetWidth(containerView.frame) - CGRectGetMinX(fromView.frame), 0);
             } completion:^(BOOL finished) {
                
             }];
             
             toView.transform = CGAffineTransformMakeTranslation(-CGRectGetWidth(toView.frame)*0.45, 0);
-            [UIView animateWithDuration:[self transitionDuration:transitionContext]*0.45 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
+            [UIView animateWithDuration:[self transitionDuration:transitionContext]*0.8 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0.05 options:UIViewAnimationOptionCurveEaseInOut animations:^{
                 toView.transform = CGAffineTransformIdentity;
             } completion:^(BOOL finished) {
                 [fromView removeFromSuperview];
