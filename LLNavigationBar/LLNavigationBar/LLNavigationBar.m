@@ -235,9 +235,9 @@ const NSInteger llNavigationBarTag = 3145;
     
     _topInset.constant = contentInset.top + self.statusBarHeight;
     _leftInset.constant = contentInset.left;
-    _bottomInset.constant = contentInset.bottom;
-    _rightInset.constant = contentInset.right;
-    [self setNeedsLayout];
+    _bottomInset.constant = -contentInset.bottom;
+    _rightInset.constant = -contentInset.right;
+    [self setNeedsUpdateConstraints];
 }
 - (void)setLeftItems:(NSArray<UIView *> *)leftItems {
     [_leftItems enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -379,6 +379,7 @@ const NSInteger llNavigationBarTag = 3145;
 }
 - (void)setBackButton:(UIView *)backButton {
     if ([self.leftStack.arrangedSubviews containsObject:_backButton]) {
+        _backButton.hidden = YES;
         [self.leftStack removeArrangedSubview:_backButton];
         
     }
