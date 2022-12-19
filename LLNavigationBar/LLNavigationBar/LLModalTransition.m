@@ -222,6 +222,7 @@ NSString *const ViewControllerModalStyleLikeNavigation = @"ViewControllerModalSt
 + (LLModalTransition *)transitionFromModalStyle:(NSString *)style presentedViewController:(UIViewController *)presentedViewController presentingViewController:(UIViewController *)presentingViewController {
     if ([self validModalStyle:style]) {
         LLModalTransition *transition = [[LLModalTransition alloc] initWithPresentedViewController:presentedViewController presentingViewController:presentingViewController];
+        presentedViewController.transitioningDelegate = transition;
         transition.modalStyle = style;
         return transition;
     }
