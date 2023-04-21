@@ -46,4 +46,5 @@
 @interface UIViewController (LLNavigationBar)
 @property (nonatomic, strong, readonly)LLNavigationBar *navigationBar;
 
+- (void)hiddenDefaultNavigationBar;
 @end

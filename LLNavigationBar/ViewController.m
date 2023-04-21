@@ -47,7 +47,7 @@
     
     UINavigationController *next = [[UINavigationController alloc] initWithRootViewController:[[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"ViewController"]];
     next.navigationBar.hidden = YES;
-    _transit = [LLModalTransition transitionFromModalStyle:ViewControllerModalStyleLikeNavigation presentedViewController:next presentingViewController:self.navigationController];
+    _transit = [LLModalTransition transitionFromModalStyle:ViewControllerModalStyleLikeSystemNavigation presentedViewController:next presentingViewController:self.navigationController];
     [self.navigationController presentViewController:next animated:YES completion:nil];
     
 }

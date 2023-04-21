@@ -222,6 +222,7 @@ const NSInteger llNavigationBarTag = 3145;
     self.barBottomAnchor.constant = -[self barStandarMarginBottom];
     [self hiddenBackButtonIfNeeded];
     [self setNeedsUpdateConstraints];
+    [[self viewController] hiddenDefaultNavigationBar];
 }
 - (void)willMoveToWindow:(UIWindow *)newWindow {
     [super willMoveToWindow:newWindow];
@@ -229,6 +230,7 @@ const NSInteger llNavigationBarTag = 3145;
     self.barBottomAnchor.constant = -[self barStandarMarginBottom];
     [self hiddenBackButtonIfNeeded];
     [self setNeedsUpdateConstraints];
+    [[self viewController] hiddenDefaultNavigationBar];
 }
 
 - (void)hiddenBackButtonIfNeeded {
@@ -473,8 +475,41 @@ const NSInteger llNavigationBarTag = 3145;
         bar = [[LLNavigationBar alloc] initWithFrame:CGRectZero];
         [self.view addSubview:bar];
         [bar applyConstraintInView:nil];
+        [self hiddenDefaultNavigationBar];
     }
     return bar;
 }
+- (void)hiddenDefaultNavigationBar {
+    if (!self.navigationController) return;
+    self.navigationController.navigationBar.hidden = YES;
+    self.navigationController.navigationBar.alpha = 0;
+    [self.navigationController.navigationBar setBackgroundImage:[self imageWithColor:[UIColor clearColor]] forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = [UIImage new];
+    if (@available(iOS 13.0, *)) {
+        UINavigationBarAppearance *apperance =  [UINavigationBarAppearance new];
+        [apperance setBackgroundImage:[self imageWithColor:[UIColor clearColor]]];
+        [apperance setShadowImage:[UIImage new]];
+        self.navigationController.navigationBar.scrollEdgeAppearance = self.navigationController.navigationBar.standardAppearance = apperance;
+    }
+}
 
+- (UIImage *)imageWithColor:(UIColor *)color {
+    
+    CGRect rect =CGRectMake(0.0f,0.0f,1.0f,1.0f);
+    
+    UIGraphicsBeginImageContext(rect.size);
+    
+    CGContextRef context =UIGraphicsGetCurrentContext();
+    
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    
+    CGContextFillRect(context, rect);
+    
+    UIImage *image =UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return image;
+    
+}
 @end
