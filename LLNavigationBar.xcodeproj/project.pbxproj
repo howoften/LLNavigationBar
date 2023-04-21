@@ -18,7 +18,6 @@
 		2DC241D328DBF84E00061057 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DC241D228DBF84E00061057 /* main.m */; };
 		2DC241DB28DBFBCF00061057 /* LLNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DC241DA28DBFBCF00061057 /* LLNavigationBar.m */; };
 		2DD8AC0C294328CC0050CD67 /* picMadeByMatools.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 2DD8AC0B294328CC0050CD67 /* picMadeByMatools.jpeg */; };
-		2DD8AC0E29432A560050CD67 /* picMadeByMatools.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DD8AC0D29432A560050CD67 /* picMadeByMatools.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,7 +39,6 @@
 		2DC241D928DBFBCF00061057 /* LLNavigationBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LLNavigationBar.h; sourceTree = "<group>"; };
 		2DC241DA28DBFBCF00061057 /* LLNavigationBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LLNavigationBar.m; sourceTree = "<group>"; };
 		2DD8AC0B294328CC0050CD67 /* picMadeByMatools.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = picMadeByMatools.jpeg; sourceTree = "<group>"; };
-		2DD8AC0D29432A560050CD67 /* picMadeByMatools.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = picMadeByMatools.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,7 +78,6 @@
 			isa = PBXGroup;
 			children = (
 				2DD8AC0B294328CC0050CD67 /* picMadeByMatools.jpeg */,
-				2DD8AC0D29432A560050CD67 /* picMadeByMatools.png */,
 				2DC241BF28DBF84C00061057 /* LLNavigationBar */,
 				2DC241BE28DBF84C00061057 /* Products */,
 				2D2982172930B31700774574 /* Frameworks */,
@@ -173,7 +170,6 @@
 				2DC241CD28DBF84E00061057 /* Assets.xcassets in Resources */,
 				2DD8AC0C294328CC0050CD67 /* picMadeByMatools.jpeg in Resources */,
 				2DC241CB28DBF84C00061057 /* Main.storyboard in Resources */,
-				2DD8AC0E29432A560050CD67 /* picMadeByMatools.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

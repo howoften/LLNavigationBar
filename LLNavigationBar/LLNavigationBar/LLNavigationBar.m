@@ -33,6 +33,7 @@
 @property (nonatomic) BOOL titleColorModified;
 @property (nonatomic, strong)LLNavigationBackButton *privateBackButton;
 @property (nonatomic, strong) NSNumber *setHiddenBackButton;
+@property (nonatomic) BOOL markNeedLayout;
 @end
 const NSInteger llNavigationBarTag = 3145;
 @implementation LLNavigationBar
@@ -45,12 +46,30 @@ const NSInteger llNavigationBarTag = 3145;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setup];
         [self configBarStyle];
+        [self setup];
         __weak LLNavigationBar *bar_weak_ref = self;
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillChangeStatusBarFrameNotification object:nil queue:NSOperationQueue.mainQueue usingBlock:^(NSNotification * _Nonnull note) {
-            bar_weak_ref.barBottomAnchor.constant = [bar_weak_ref barStandarMarginBottom];
-            [bar_weak_ref setNeedsUpdateConstraints];
+            if (UIApplication.sharedApplication.applicationState == UIApplicationStateActive) {
+                bar_weak_ref.barBottomAnchor.constant = -[bar_weak_ref barStandarMarginBottom];
+                [bar_weak_ref setNeedsUpdateConstraints];
+            }else {
+                bar_weak_ref.markNeedLayout = YES;
+            }
+        }];
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification object:nil queue:NSOperationQueue.mainQueue usingBlock:^(NSNotification * _Nonnull note) {
+            if (bar_weak_ref.markNeedLayout)  {
+                bar_weak_ref.barBottomAnchor.constant = -[bar_weak_ref barStandarMarginBottom];
+                [bar_weak_ref setNeedsUpdateConstraints];
+                bar_weak_ref.markNeedLayout = NO;
+            }
+        }];
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidBecomeActiveNotification object:nil queue:NSOperationQueue.mainQueue usingBlock:^(NSNotification * _Nonnull note) {
+            if (bar_weak_ref.markNeedLayout)  {
+                bar_weak_ref.barBottomAnchor.constant = -[bar_weak_ref barStandarMarginBottom];
+                [bar_weak_ref setNeedsUpdateConstraints];
+                bar_weak_ref.markNeedLayout = NO;
+            }
         }];
     }
     return self;
@@ -60,6 +79,7 @@ const NSInteger llNavigationBarTag = 3145;
     _translucent= YES;
     _lightStyle = YES;
     _shadowColor = [UIColor colorWithRed:203/255.f green:203/255.f blue:203/255.f alpha:1];
+    _backButtonColor = UIColor.systemBlueColor;
     self.layer.shadowColor = _shadowColor.CGColor;
     self.layer.shadowOffset = CGSizeMake(0, 3);
     self.layer.shadowRadius = 3;
@@ -131,6 +151,7 @@ const NSInteger llNavigationBarTag = 3145;
     [self.leftStack.heightAnchor constraintEqualToConstant:44].active = YES;
     
     self.privateBackButton = [[LLNavigationBackButton alloc] init];
+    self.privateBackButton.strokeColor = self.backButtonColor;
     [self.leftStack addArrangedSubview:self.privateBackButton];
     [self.privateBackButton addTarget:self action:@selector(onBack) forControlEvents:UIControlEventTouchUpInside];
     self.backButton = self.privateBackButton;
@@ -237,7 +258,7 @@ const NSInteger llNavigationBarTag = 3145;
     _leftInset.constant = contentInset.left;
     _bottomInset.constant = -contentInset.bottom;
     _rightInset.constant = -contentInset.right;
-    [self setNeedsUpdateConstraints];
+    [self setNeedsLayout];
 }
 - (void)setLeftItems:(NSArray<UIView *> *)leftItems {
     [_leftItems enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -263,7 +284,7 @@ const NSInteger llNavigationBarTag = 3145;
     }];
 }
 - (void)setTitleView:(UIView *)titleView {
-    if (titleView == nil && _titleView) {
+    if (_titleView) {
         [self.titleStack removeArrangedSubview:_titleView];
     }
     _titleView = titleView;
@@ -392,6 +413,10 @@ const NSInteger llNavigationBarTag = 3145;
     self.setHiddenBackButton = @(hiddenBackButton);
     [self hiddenBackButtonIfNeeded];
 }
+- (void)setBackButtonColor:(UIColor *)backButtonColor {
+    _backButtonColor = backButtonColor;
+    self.privateBackButton.strokeColor = backButtonColor;
+}
 
 - (CGFloat)statusBarHeight {
     UIWindow *window = [UIApplication sharedApplication].delegate.window;
@@ -423,7 +448,8 @@ const NSInteger llNavigationBarTag = 3145;
     CGFloat height = CGRectGetHeight(barController.view.frame);
     UIWindow *window = [UIApplication sharedApplication].delegate.window;
     if (height < CGRectGetHeight(window.frame) - self.statusBarHeight - 44 ) {
-        height = CGRectGetHeight(window.rootViewController.view.frame);
+        barController = window.rootViewController;
+        height = CGRectGetHeight(barController.view.frame);
     }
     return height - self.statusBarHeight - 44;
 }
