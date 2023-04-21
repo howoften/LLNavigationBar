@@ -131,6 +131,7 @@ NSString *const ViewControllerModalStyleLikeNavigation = @"ViewControllerModalSt
     }else if ([self.modalStyle isEqualToString:ViewControllerModalStyleLikeNavigation]) {
         if (isPresenting) {
             [self forceCallViewControllerLifeSelector:fromViewController active:NO willDo:YES animated:[transitionContext isAnimated]];
+            containerView.frame = CGRectMake(0, 0, CGRectGetWidth(containerView.frame), CGRectGetHeight(containerView.frame) + (CGRectGetMinY(containerView.frame)-0));
             [containerView addSubview:toView];
             toView.transform = CGAffineTransformMakeTranslation(CGRectGetWidth(containerView.frame) - CGRectGetMinX(toView.frame), 0);
             [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:1 initialSpringVelocity:0.05 options:UIViewAnimationOptionCurveEaseInOut animations:^{
@@ -138,6 +139,7 @@ NSString *const ViewControllerModalStyleLikeNavigation = @"ViewControllerModalSt
             } completion:^(BOOL finished) {
                 [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
                 [self forceCallViewControllerLifeSelector:fromViewController active:NO willDo:NO animated:[transitionContext isAnimated]];
+                fromView.transform = CGAffineTransformIdentity;
             }];
             [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
                 fromView.transform = CGAffineTransformMakeTranslation(-CGRectGetWidth(fromView.frame)*0.45, 0);
