@@ -356,6 +356,7 @@ const NSInteger llNavigationBarTag = 3145;
         self.transform = CGAffineTransformIdentity;
         return;
     }
+    self.transform = CGAffineTransformMakeTranslation(0, -MAX(self.statusBarHeight + 44, CGRectGetMaxY(self.frame)));
     [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         self.transform = CGAffineTransformIdentity;
     } completion:^(BOOL finished) {
@@ -364,11 +365,11 @@ const NSInteger llNavigationBarTag = 3145;
 }
 - (void)hiddenAnimated:(BOOL)animated {
     if (!animated) {
-        self.transform = CGAffineTransformMakeTranslation(0, -CGRectGetMaxY(self.frame));
+        self.transform = CGAffineTransformMakeTranslation(0, -MAX(self.statusBarHeight + 44, CGRectGetMaxY(self.frame)) - 5); //+阴影偏移量
         return;
     }
     [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        self.transform = CGAffineTransformMakeTranslation(0, -CGRectGetMaxY(self.frame));
+        self.transform = CGAffineTransformMakeTranslation(0, -MAX(self.statusBarHeight + 44, CGRectGetMaxY(self.frame)) - 5);
     } completion:^(BOOL finished) {
         
     }];
@@ -378,14 +379,14 @@ const NSInteger llNavigationBarTag = 3145;
         self.transform = CGAffineTransformMakeTranslation(0, 0);
         return;
     }
-    self.transform = CGAffineTransformMakeTranslation(0, -CGRectGetHeight(self.frame)*percent);
+    self.transform = CGAffineTransformMakeTranslation(0, -MAX(self.statusBarHeight + 44, CGRectGetHeight(self.frame)) * percent);
 }
 - (void)showPercent:(CGFloat)percent {
     if (percent > 1) {
         self.transform = CGAffineTransformIdentity;
         return;
     }
-    self.transform = CGAffineTransformMakeTranslation(0, -CGRectGetHeight(self.frame) * (1-percent));
+    self.transform = CGAffineTransformMakeTranslation(0, -MAX(self.statusBarHeight + 44, CGRectGetHeight(self.frame)) * (1-percent));
 }
 
 - (void)setTranslucent:(BOOL)translucent {
@@ -494,22 +495,13 @@ const NSInteger llNavigationBarTag = 3145;
 }
 
 - (UIImage *)imageWithColor:(UIColor *)color {
-    
     CGRect rect =CGRectMake(0.0f,0.0f,1.0f,1.0f);
-    
     UIGraphicsBeginImageContext(rect.size);
-    
     CGContextRef context =UIGraphicsGetCurrentContext();
-    
     CGContextSetFillColorWithColor(context, [color CGColor]);
-    
     CGContextFillRect(context, rect);
-    
     UIImage *image =UIGraphicsGetImageFromCurrentImageContext();
-    
     UIGraphicsEndImageContext();
-    
     return image;
-    
 }
 @end
