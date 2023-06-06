@@ -18,14 +18,15 @@ const CGRect negativeRect = {{0, 0}, {-111.222, -111.222}};
     return [self initWithFrame:negativeRect];
 }
 - (instancetype)initWithFrame:(CGRect)frame {
-    [self initialState];
     if (CGRectEqualToRect(frame, negativeRect)) {
-        self.intrinsicSize = defaultRect.size;
-        return [super initWithFrame:defaultRect];
+        frame = defaultRect;
     }
-    self.intrinsicSize = frame.size;
-    return [super initWithFrame:frame];
-
+    if (self = [super initWithFrame:frame]) {
+        self.intrinsicSize = frame.size;
+        [self initialState];
+        
+    }
+    return self;
 }
 
 - (void)initialState {
