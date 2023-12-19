@@ -423,7 +423,7 @@ const NSInteger llNavigationBarTag = 3145;
 
 - (CGFloat)statusBarHeight {
     UIWindow *window = [UIApplication sharedApplication].delegate.window;
-    if (CGRectGetHeight(window.frame) < 737) { // plus: 414 * 736
+    if (CGRectGetHeight([UIScreen mainScreen].nativeBounds) / [UIScreen mainScreen].scale < 737 ) { // plus: 414 * 736
         return 20;
     }
     if (@available(iOS 11.0, *)) {
